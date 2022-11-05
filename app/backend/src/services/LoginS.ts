@@ -1,9 +1,9 @@
-import TokenHandler from '../helpers/tokenV';
+import TokenV from '../helpers/tokenV';
 import User from '../database/models/UsuarioModel';
 import PasswordVerifier from '../helpers/criptoV';
 
-class LoginService {
-  public getUserByEmail = async (email:string) => {
+class Lservice {
+  public pegandoEmail = async (email:string) => {
     const user = await User.findOne({
       attributes: ['email', 'password'],
       where: {
@@ -13,7 +13,7 @@ class LoginService {
     return user;
   };
 
-  public getUserByPassword = async (email: string, password: string) => {
+  public pegandoSenha = async (email: string, password: string) => {
     const user = await User.findOne({
       where: {
         email,
@@ -24,12 +24,12 @@ class LoginService {
       user?.password,
     );
     if (teste) {
-      const tokenHandler = new TokenHandler();
-      const token = tokenHandler.tokenGenerator(user);
+      const tokenV = new TokenV();
+      const token = tokenV.tokenGenerator(user);
       return { token };
     }
     return teste;
   };
 }
 
-export default LoginService;
+export default Lservice;

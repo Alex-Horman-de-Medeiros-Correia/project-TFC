@@ -1,12 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import MatchController from '../controllers/PartidasController';
+import PartidaControl from '../controllers/PartidasController';
 import nameValidationMiddleware from '../middlewares/timesVerificacao';
 import ckeckTeam from '../middlewares/checandoTimes';
 import tokenValidation from '../middlewares/tokenValidacao';
 
 const routers: Router = Router();
 
-const matchesController = new MatchController();
+const matchesController = new PartidaControl();
 
 routers.get('/matches', (req:Request, res: Response) => {
   const { inProgress } = req.query;

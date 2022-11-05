@@ -8,7 +8,7 @@ const jwtDefaultConfig: SignOptions = {
   algorithm: 'HS256',
 };
 
-class TokenHandler {
+class TokenV {
   private jwtConfig?: SignOptions;
   constructor(jwtConfig?: SignOptions) {
     if (!jwtConfig) { this.jwtConfig = jwtDefaultConfig; }
@@ -16,7 +16,7 @@ class TokenHandler {
 
   public tokenGenerator = (payload: any) => jwt.sign({ data: payload }, SECRET, this.jwtConfig);
 
-  public tokenValidate = async (token: any) => {
+  public validacaoDeToken = async (token: any) => {
     try {
       const validate = await jwt.verify(token, SECRET);
       return validate;
@@ -29,4 +29,4 @@ class TokenHandler {
   };
 }
 
-export default TokenHandler;
+export default TokenV;

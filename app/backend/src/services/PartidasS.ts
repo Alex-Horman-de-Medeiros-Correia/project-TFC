@@ -2,7 +2,7 @@ import Team from '../database/models/TimesM';
 import Match from '../database/models/PartidaM';
 import { IMatch } from '../interfaces/partidaInterface';
 
-class MatchService {
+class PartidasS {
   public getMatches = async () => {
     const teams = await Match.findAll({
       include: [
@@ -47,4 +47,4 @@ class MatchService {
   };
 }
 
-export default MatchService;
+export default PartidasS;

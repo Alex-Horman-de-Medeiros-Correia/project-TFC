@@ -10,12 +10,12 @@ const lcontroller = new Lcontroller();
 routers.post(
   '/login',
   (req:Request, res:Response, next: NextFunction) => FieldVerifier.fieldVerify(req, res, next),
-  (req:Request, res: Response) => lcontroller.getLogin(req, res),
+  (req:Request, res: Response) => lcontroller.pegandoLogin(req, res),
 );
 routers.get(
   '/login/validate',
   (req:Request, res:Response, next: NextFunction) => tokenValidation(req, res, next),
-  (req:Request, res: Response) => lcontroller.loginValidation(req, res),
+  (req:Request, res: Response) => lcontroller.validacaoDeLogin(req, res),
 );
 
 export default routers;
