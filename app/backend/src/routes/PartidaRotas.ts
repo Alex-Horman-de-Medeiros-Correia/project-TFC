@@ -1,4 +1,8 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router,
+  Request,
+  Response,
+  NextFunction } from 'express';
+
 import PartidaControl from '../controllers/PartidasController';
 import nameValidationMiddleware from '../middlewares/timesVerificacao';
 import ckeckTeam from '../middlewares/checandoTimes';
@@ -11,9 +15,9 @@ const matchesController = new PartidaControl();
 routers.get('/matches', (req:Request, res: Response) => {
   const { inProgress } = req.query;
   if (!inProgress) {
-    return matchesController.getAllMatches(req, res);
+    return matchesController.todasPartidas(req, res);
   }
-  return matchesController.getMatchesInProgress(req, res);
+  return matchesController.partidasEmProgresso(req, res);
 });
 routers.post(
   '/matches',
@@ -25,7 +29,7 @@ routers.post(
 routers.patch(
   '/matches/:id/finish',
   (req:Request, res:Response, next: NextFunction) => tokenValidation(req, res, next),
-  (req:Request, res: Response) => matchesController.updateMatchStatus(req, res),
+  (req:Request, res: Response) => matchesController.atualizandoStatusDePar(req, res),
 );
 routers.patch(
   '/matches/:id',

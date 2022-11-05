@@ -13,7 +13,7 @@ class PartidasS {
     return teams;
   };
 
-  public getMatchesInProgress = async (status: boolean) => {
+  public partidasEmProgresso = async (status: boolean) => {
     const teams = await Match.findAll({
       include: [
         { model: Team, as: 'teamHome', attributes: ['teamName'] },
@@ -26,12 +26,12 @@ class PartidasS {
     return [teams];
   };
 
-  public updateMatchById = async (inProgress: boolean, id: number) => {
+  public atualizandoIdDePar = async (inProgress: boolean, id: number) => {
     await Match.update({ inProgress }, { where: { id } });
     return { message: 'Finished' };
   };
 
-  public updateResultMatch = async (homeTeamGoals: number, awayTeamGoals: number, id: number) => {
+  public atualizarResultado = async (homeTeamGoals: number, awayTeamGoals: number, id: number) => {
     await Match.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
     return { message: 'Updated!' };
   };

@@ -10,21 +10,21 @@ class PartidaControl {
     this.service = new PartidasS();
   }
 
-  public async getAllMatches(req: Request, res: Response) {
+  public async todasPartidas(req: Request, res: Response) {
     const matches = await this.service.getMatches();
 
     return res.status(200).json(matches);
   }
 
-  public async getMatchesInProgress(req: Request, res: Response) {
+  public async partidasEmProgresso(req: Request, res: Response) {
     const { inProgress } = req.query;
 
     if (inProgress === 'false') {
-      const [team] = await this.service.getMatchesInProgress(false);
+      const [team] = await this.service.partidasEmProgresso(false);
 
       return res.status(200).json(team);
     }
-    const [team] = await this.service.getMatchesInProgress(true);
+    const [team] = await this.service.partidasEmProgresso(true);
 
     return res.status(200).json(team);
   }
@@ -32,17 +32,17 @@ class PartidaControl {
   /* public async todasasPartidas(req: Request, res: Response) {
     const { inProgress } = req.query;
     if (inProgress === 'false') {
-      const [team] = await this.service.getMatchesInProgress(false);
+      const [team] = await this.service.partidasEmProgresso(false);
       return res.status(200).json(team);
     }
-    const [team] = await this.service.getMatchesInProgress(true);
+    const [team] = await this.service.partidasEmProgresso(true);
     return res.status(200).json(team);
   } */
 
-  public async updateMatchStatus(req: Request, res: Response) {
+  public async atualizandoStatusDePar(req: Request, res: Response) {
     const { id } = req.params;
 
-    const result = await this.service.updateMatchById(false, Number(id));
+    const result = await this.service.atualizandoIdDePar(false, Number(id));
     return res.status(200).json(result);
   }
 
@@ -50,7 +50,8 @@ class PartidaControl {
     const { id } = req.params;
 
     const { homeTeamGoals, awayTeamGoals } = req.body;
-    const result = await this.service.updateResultMatch(homeTeamGoals, awayTeamGoals, Number(id));
+    const result = await this.service.atualizarResultado(homeTeamGoals, awayTeamGoals, Number(id));
+
     return res.status(200).json(result);
   }
 
