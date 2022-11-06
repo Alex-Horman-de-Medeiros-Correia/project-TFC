@@ -1,6 +1,6 @@
 import Team from '../database/models/TimesM';
 
-class TeamService {
+class TimesS {
   public getTeams = async () => {
     const teams = await Team.findAll({
       attributes: ['id', 'teamName'],
@@ -8,7 +8,7 @@ class TeamService {
     return teams;
   };
 
-  public getTeamsById = async (id:number) => {
+  public timesId = async (id:number) => {
     const team = await Team.findAll({
       attributes: ['id', 'teamName'],
       where: {
@@ -18,4 +18,4 @@ class TeamService {
     return team;
   };
 }
-export default TeamService;
+export default TimesS;

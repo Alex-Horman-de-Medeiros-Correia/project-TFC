@@ -13,21 +13,21 @@ const QuadroController1 = new QuadroController();
 
 routers.get(
   '/leaderboard/home',
-  (req:Request, res: Response) => QuadroController1.getHomeTeamRanking(req, res),
+  (req:Request, res: Response) => QuadroController1.rankingTime(req, res),
 );
 
 routers.get(
   '/leaderboard/away',
-  (req:Request, res: Response) => QuadroController1.getAwayTeamRanking(req, res),
+  (req:Request, res: Response) => QuadroController1.pegandoRanking(req, res),
 );
 
 /* routers.get(
   '/leaderboard/away',
-  (req:Request, res: Response) => QuadroController1.getAwayTeamRanking(req, res),
+  (req:Request, res: Response) => QuadroController1.pegandoRanking(req, res),
 ); */
 
 routers.get(
   '/leaderboard',
-  (req:Request, res: Response) => QuadroController1.getGeralRanking(req, res),
+  (req:Request, res: Response) => QuadroController1.rankingTotal(req, res),
 );
 export default routers;

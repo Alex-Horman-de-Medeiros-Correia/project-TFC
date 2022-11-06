@@ -1,28 +1,33 @@
-import { Request, Response } from 'express';
-import LeaderboardService from '../services/LeaderBoardS';
+import { Request,
+  Response } from 'express';
+
+import BoardServ from '../services/LeaderBoardS';
 
 class QuadroController {
-  private service: LeaderboardService;
+  private service: BoardServ;
 
   constructor() {
-    this.service = new LeaderboardService();
+    this.service = new BoardServ();
   }
 
-  public async getHomeTeamRanking(req: Request, res: Response) {
-    const ranking = await this.service.getHomeTeamRanking();
-    const sort = this.service.resultsSort(ranking);
+  public async rankingTime(req: Request, res: Response) {
+    const ranking = await this.service.rankingTime();
+    const sort = this.service.resultado(ranking);
+
     return res.status(200).json(sort);
   }
 
-  public async getAwayTeamRanking(req: Request, res: Response) {
-    const ranking = await this.service.getAwayTeamRanking();
-    const sort = this.service.resultsSort(ranking);
+  public async pegandoRanking(req: Request, res: Response) {
+    const ranking = await this.service.pegandoRanking();
+    const sort = this.service.resultado(ranking);
+
     return res.status(200).json(sort);
   }
 
-  public async getGeralRanking(req: Request, res: Response) {
-    const ranking = await this.service.getGeralRanking();
-    const sort = this.service.resultsSort(ranking);
+  public async rankingTotal(req: Request, res: Response) {
+    const ranking = await this.service.rankingTotal();
+    const sort = this.service.resultado(ranking);
+
     return res.status(200).json(sort);
   }
 }

@@ -1,23 +1,30 @@
-import { Request, Response } from 'express';
-import TeamService from '../services/TimesS';
+import { Request,
+  Response } from 'express';
 
-class TeamController {
-  private service: TeamService;
+import TimesS from '../services/TimesS';
+
+class TimeC {
+  private service: TimesS;
 
   constructor() {
-    this.service = new TeamService();
+    this.service = new TimesS();
   }
 
-  public async getAllTeams(req: Request, res: Response) {
+  public async todosTimes(req: Request, res: Response) {
     const teams = await this.service.getTeams();
+
     return res.status(200).json(teams);
   }
 
-  public async getTeamById(req: Request, res: Response) {
+  // rever melhor essa parte para maior compreenssão do todo
+
+  public async timeId(req: Request, res: Response) {
     const { id } = req.params;
-    const [team] = await this.service.getTeamsById(Number(id));
+
+    const [team] = await this.service.timesId(Number(id));
+
     return res.status(200).json(team);
   }
 }
 
-export default TeamController;
+export default TimeC;

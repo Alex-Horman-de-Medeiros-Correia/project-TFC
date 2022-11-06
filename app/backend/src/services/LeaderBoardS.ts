@@ -1,19 +1,19 @@
 import { Op } from 'sequelize';
 import Team from '../database/models/TimesM';
 import Match from '../database/models/PartidaM';
-import TeamService from './TimesS';
+import TimesS from './TimesS';
 import { ILeaderboard } from '../interfaces/leaderBoardInter';
 
-class LeaderboardService {
+class BoardServ {
   public totalVictories = 0;
   public totalLosses = 0;
   public totalDraws = 0;
   public goalsFavor = 0;
   public goalsOwn = 0;
-  private serviceTeam: TeamService;
+  private serviceTeam: TimesS;
 
   constructor() {
-    this.serviceTeam = new TeamService();
+    this.serviceTeam = new TimesS();
   }
 
   public getHomeTeamMatches = async (team: number) => {
@@ -128,7 +128,7 @@ class LeaderboardService {
     }
   };
 
-  public resultsSort = (array:any) => array.sort(
+  public resultado = (array:any) => array.sort(
     (p1: any, p2: any) => {
       if (p1.totalPoints !== p2.totalPoints) {
         return this.sortByAtributes(p1.totalPoints, p2.totalPoints);
@@ -149,7 +149,7 @@ class LeaderboardService {
     },
   );
 
-  public getHomeTeamRanking = async () => {
+  public rankingTime = async () => {
     const ranking = [];
     const teams = await this.serviceTeam.getTeams();
     const teamNames = teams.map((team) => team?.teamName);
@@ -163,11 +163,11 @@ class LeaderboardService {
       ranking[indexTeam] = this.recordHomeTeam(teamNames[indexTeam]);
       this.setAtributes();
     }
-    // const sort = this.resultsSort(ranking);
+    // const sort = this.resultado(ranking);
     return ranking;
   };
 
-  public getAwayTeamRanking = async () => {
+  public pegandoRanking = async () => {
     const ranking = [];
     const teams = await this.serviceTeam.getTeams();
     const teamNames = teams.map((team) => team?.teamName);
@@ -181,7 +181,7 @@ class LeaderboardService {
       ranking[indexTeam] = this.recordHomeTeam(teamNames[indexTeam]);
       this.setAtributes();
     }
-    // const sort = this.resultsSort(ranking);
+    // const sort = this.resultado(ranking);
     return ranking;
   };
 
@@ -222,10 +222,10 @@ class LeaderboardService {
     return rankingBoard;
   };
 
-  public getGeralRanking = async () => {
+  public rankingTotal = async () => {
     const ranking = [];
-    const rankingHome = await this.getHomeTeamRanking();
-    const rankingAway = await this.getAwayTeamRanking();
+    const rankingHome = await this.rankingTime();
+    const rankingAway = await this.pegandoRanking();
     for (let indexRanking = 0; indexRanking < rankingHome.length; indexRanking += 1) {
       const home = this.teste(rankingHome, indexRanking);
       const away = this.teste(rankingAway, indexRanking);
@@ -236,4 +236,4 @@ class LeaderboardService {
   };
 }
 
-export default LeaderboardService;
+export default BoardServ;
