@@ -11,7 +11,7 @@ class TimeC {
   }
 
   public async todosTimes(req: Request, res: Response) {
-    const teams = await this.service.getTeams();
+    const teams = await this.service.captoTimes();
 
     return res.status(200).json(teams);
   }

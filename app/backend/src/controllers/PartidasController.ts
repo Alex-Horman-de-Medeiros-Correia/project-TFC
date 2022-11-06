@@ -11,7 +11,7 @@ class PartidaControl {
   }
 
   public async todasPartidas(req: Request, res: Response) {
-    const matches = await this.service.getMatches();
+    const matches = await this.service.pegandoPartidas();
 
     return res.status(200).json(matches);
   }

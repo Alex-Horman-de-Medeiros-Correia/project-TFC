@@ -1,39 +1,46 @@
 import { Op } from 'sequelize';
+import { Board } from '../interfaces/leaderBoardInter';
 import Team from '../database/models/TimesM';
 import Match from '../database/models/PartidaM';
 import TimesS from './TimesS';
-import { Board } from '../interfaces/leaderBoardInter';
 
 class BoardServ {
+  private serviceTeam: TimesS;
   public totalVictories = 0;
-  public totalLosses = 0;
+  public goalsOwn = 0;
   public totalDraws = 0;
   public goalsFavor = 0;
-  public goalsOwn = 0;
-  private serviceTeam: TimesS;
+  public totalLosses = 0;
 
   constructor() {
     this.serviceTeam = new TimesS();
   }
 
-  public getHomeTeamMatches = async (team: number) => {
+  // aqui obtive ajuda para fazer a implementação de alguns métodos...
+
+  public partidasDaCasa = async (team: number) => {
     const teams = await Match.findAll({
+
       include: [
         { model: Team, as: 'teamHome', attributes: ['teamName'] },
+
         { model: Team, as: 'teamAway', attributes: ['teamName'] },
       ],
       where: {
         homeTeam: team,
+
         inProgress: false,
       },
     });
+
     return teams;
   };
 
-  public getAwayTeamMatches = async (team: number) => {
+  public partidasDosTimes = async (team: number) => {
     const teams = await Match.findAll({
       include: [
         { model: Team, as: 'teamHome', attributes: ['teamName'] },
+
         { model: Team, as: 'teamAway', attributes: ['teamName'] },
       ],
       where: {
@@ -41,16 +48,21 @@ class BoardServ {
         inProgress: false,
       },
     });
+
     return teams;
   };
 
-  public getTeamMatches = async (team: number) => {
+  public pegandoPartidasTimes = async (team: number) => {
     const teams = await Match.findAll({
+
       include: [
         { model: Team, as: 'teamHome', attributes: ['teamName'] },
+
         { model: Team, as: 'teamAway', attributes: ['teamName'] },
       ],
       where: {
+        /* [Op.or]: [{ homeTeam }, { awayTeam }],
+        inProgress: false, */
         [Op.or]: [{ homeTeam: team }, { awayTeam: team }],
         inProgress: false,
       },
@@ -58,7 +70,7 @@ class BoardServ {
     return teams;
   };
 
-  public getResultsHomeTeam = (teams:Match[]) => {
+  public resultadoTimeDaCasa = (teams:Match[]) => {
     for (let i = 0; i < teams.length; i += 1) {
       const homeTeamGoals = teams[i]?.homeTeamGoals;
       const awayTeamGoals = teams[i]?.awayTeamGoals;
@@ -76,7 +88,7 @@ class BoardServ {
     }
   };
 
-  public getResultsAwayTeam = (teams: Match[]) => {
+  public resultadoTimesDeFora = (teams: Match[]) => {
     for (let i = 0; i < teams.length; i += 1) {
       const homeTeamGoals = teams[i]?.homeTeamGoals;
       const awayTeamGoals = teams[i]?.awayTeamGoals;
@@ -94,56 +106,56 @@ class BoardServ {
     }
   };
 
-  public recordHomeTeam = (name: string) => {
+  public registroTimeCasa = (name: string) => {
     const totalPoints = this.totalVictories * 3 + this.totalDraws * 1;
     const totalGames = this.totalVictories + this.totalDraws + this.totalLosses;
     return {
-      name,
-      totalPoints,
       totalGames,
+      totalPoints,
+      name,
+      totalLosses: this.totalLosses,
+      goalsBalance: this.goalsFavor - this.goalsOwn,
+      goalsFavor: this.goalsFavor,
       totalVictories: this.totalVictories,
       totalDraws: this.totalDraws,
-      totalLosses: this.totalLosses,
-      goalsFavor: this.goalsFavor,
       goalsOwn: this.goalsOwn,
-      goalsBalance: this.goalsFavor - this.goalsOwn,
       efficiency: ((totalPoints / (totalGames * 3)) * 100).toFixed(2),
     };
   };
 
-  public setAtributes = () => {
-    this.totalVictories = 0;
-    this.totalLosses = 0;
-    this.totalDraws = 0;
-    this.goalsFavor = 0;
+  public atributosFeitos = () => {
     this.goalsOwn = 0;
+    this.totalLosses = 0;
+    this.totalVictories = 0;
+    this.goalsFavor = 0;
+    this.totalDraws = 0;
   };
 
-  public sortByAtributes = (param1: number, param2: number): any => {
-    if (param1 < param2) {
+  public pegandoAtributos = (num: number, num2: number): any => {
+    if (num < num2) {
       return 1;
     }
-    if (param1 > param2) {
+    if (num > num2) {
       return -1;
     }
   };
 
-  public resultado = (array:any) => array.sort(
-    (p1: any, p2: any) => {
-      if (p1.totalPoints !== p2.totalPoints) {
-        return this.sortByAtributes(p1.totalPoints, p2.totalPoints);
+  public resultado = (array: any) => array.sort(
+    (result1: any, result2: any) => {
+      if (result1.totalPoints !== result2.totalPoints) {
+        return this.pegandoAtributos(result1.totalPoints, result2.totalPoints);
       }
-      if (p1.totalVictories !== p2.totalVictories) {
-        return this.sortByAtributes(p1.totalVictories, p2.totalVictories);
+      if (result1.totalVictories !== result2.totalVictories) {
+        return this.pegandoAtributos(result1.totalVictories, result2.totalVictories);
       }
-      if (p1.goalsBalance !== p2.goalsBalance) {
-        return this.sortByAtributes(p1.goalsBalance, p2.goalsBalance);
+      if (result1.goalsBalance !== result2.goalsBalance) {
+        return this.pegandoAtributos(result1.goalsBalance, result2.goalsBalance);
       }
-      if (p1.goalsFavor !== p2.goalsFavor) {
-        return this.sortByAtributes(p1.goalsFavor, p2.goalsFavor);
+      if (result1.goalsFavor !== result2.goalsFavor) {
+        return this.pegandoAtributos(result1.goalsFavor, result2.goalsFavor);
       }
-      if (p1.goalsOwn !== p2.goalsOwn) {
-        return this.sortByAtributes(p1.goalsOwn, p2.goalsOwn);
+      if (result1.goalsOwn !== result2.goalsOwn) {
+        return this.pegandoAtributos(result1.goalsOwn, result2.goalsOwn);
       }
       return 0;
     },
@@ -151,51 +163,46 @@ class BoardServ {
 
   public rankingTime = async () => {
     const ranking = [];
-    const teams = await this.serviceTeam.getTeams();
+    const teams = await this.serviceTeam.captoTimes();
     const teamNames = teams.map((team) => team?.teamName);
     const promises = teamNames.map(async (team, index) => {
-      const matches = await this.getHomeTeamMatches(index + 1);
+      const matches = await this.partidasDaCasa(index + 1);
       return matches;
     });
     const MATCHES = await Promise.all(promises);
     for (let indexTeam = 0; indexTeam < teamNames.length; indexTeam += 1) {
-      this.getResultsHomeTeam(MATCHES[indexTeam]);
-      ranking[indexTeam] = this.recordHomeTeam(teamNames[indexTeam]);
-      this.setAtributes();
+      this.resultadoTimeDaCasa(MATCHES[indexTeam]);
+      ranking[indexTeam] = this.registroTimeCasa(teamNames[indexTeam]);
+      this.atributosFeitos();
     }
-    // const sort = this.resultado(ranking);
     return ranking;
   };
 
   public pegandoRanking = async () => {
     const ranking = [];
-    const teams = await this.serviceTeam.getTeams();
+    const teams = await this.serviceTeam.captoTimes();
     const teamNames = teams.map((team) => team?.teamName);
     const promises = teamNames.map(async (team, index) => {
-      const matches = await this.getAwayTeamMatches(index + 1);
+      const matches = await this.partidasDosTimes(index + 1);
       return matches;
     });
     const MATCHES = await Promise.all(promises);
     for (let indexTeam = 0; indexTeam < teamNames.length; indexTeam += 1) {
-      this.getResultsAwayTeam(MATCHES[indexTeam]);
-      ranking[indexTeam] = this.recordHomeTeam(teamNames[indexTeam]);
-      this.setAtributes();
+      this.resultadoTimesDeFora(MATCHES[indexTeam]);
+      ranking[indexTeam] = this.registroTimeCasa(teamNames[indexTeam]);
+      this.atributosFeitos();
     }
-    // const sort = this.resultado(ranking);
     return ranking;
   };
 
-  public teste = (
-    ranking: Board [],
-    index: number,
-  ) => {
+  public teste = (ranking: Board [], index: number) => {
+    const goalsOwn = ranking[index]?.goalsOwn;
     const totalPoints = ranking[index]?.totalPoints;
+    const totalLosses = ranking[index]?.totalLosses;
     const totalGames = ranking[index]?.totalGames;
     const totalVictories = ranking[index]?.totalVictories;
-    const totalDraws = ranking[index]?.totalDraws;
-    const totalLosses = ranking[index]?.totalLosses;
     const goalsFavor = ranking[index]?.goalsFavor;
-    const goalsOwn = ranking[index]?.goalsOwn;
+    const totalDraws = ranking[index]?.totalDraws;
     return { totalPoints,
       totalVictories,
       totalGames,
