@@ -1,10 +1,20 @@
-import { Model, INTEGER, STRING } from 'sequelize';
+import { INTEGER,
+  STRING,
+  Model } from 'sequelize';
+
 import db from '.';
 
+/* class Times extends Model {
+  public id!;
+  public nome!: string;
+} */
+
 class Team extends Model {
-  public id!: number;
   public teamName!: string;
+  public id!: number;
 }
+
+// essa parte de baixo precisei de orientação para fazer...
 
 Team.init({
   id: {
@@ -13,17 +23,19 @@ Team.init({
     primaryKey: true,
     autoIncrement: true,
   },
+
   teamName: {
     type: STRING,
     allowNull: false,
     field: 'team_name',
   },
+
 }, {
+  timestamps: false,
   underscored: true,
   sequelize: db,
-  tableName: 'teams',
   modelName: 'Team',
-  timestamps: false,
+  tableName: 'teams',
 });
 
 export default Team;

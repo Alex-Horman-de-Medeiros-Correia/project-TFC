@@ -1,19 +1,18 @@
-import { STRING, INTEGER, Model } from 'sequelize';
+import { STRING,
+  INTEGER,
+  Model } from 'sequelize';
+
 import db from '.';
 
 export default class User extends Model {
   declare id: number;
-
-  declare username: string;
-
-  declare email: string;
-
-  declare password: string;
-
   declare role: string;
+  declare username: string;
+  declare password: string;
+  declare email: string;
 }
 
-/* export default class User extends Model {
+/* export default class Usuario extends Model {
     declare id: number;
 
     declare username: ;
@@ -34,25 +33,30 @@ User.init({
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   },
+
   username: {
     allowNull: false,
     type: STRING,
   },
+
   email: {
     allowNull: false,
     type: STRING,
   },
+
   password: {
     allowNull: false,
     type: STRING,
   },
+
   role: {
     allowNull: false,
     type: STRING,
   },
+
 }, {
-  underscored: true,
-  sequelize: db,
-  tableName: 'users',
   timestamps: false,
+  underscored: true,
+  tableName: 'users',
+  sequelize: db,
 });
