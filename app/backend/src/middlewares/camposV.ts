@@ -10,4 +10,5 @@ export default class FiedVerifier {
     }
     return next();
   };
+  // ...
 }
