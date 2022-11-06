@@ -24,6 +24,7 @@ class TimeC {
     const [team] = await this.service.timesId(Number(id));
 
     return res.status(200).json(team);
+    // ...
   }
 }
 
