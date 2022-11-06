@@ -3,7 +3,7 @@ import { Request,
   NextFunction } from 'express';
 
 export default class VerificadorCampo {
-  public static fieldVerify = (req:Request, res:Response, next: NextFunction): any => {
+  public static campoVeri = (req:Request, res:Response, next: NextFunction): any => {
     const { email, password } = req.body;
 
     if (!email || !password) {
