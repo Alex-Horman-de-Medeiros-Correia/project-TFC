@@ -1,21 +1,25 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response,
+  NextFunction,
+  Request } from 'express';
+
 import TimesS from '../services/TimesS';
 /* import TimesS from '../services/TimesS'; */
 
-const ckeckTeam = async (req:Request, res:Response, next: NextFunction) => {
+const checandoTime = async (req:Request, res:Response, next: NextFunction) => {
   const { homeTeam, awayTeam } = req.body;
-
   const timesS = new TimesS();
 
-  const checkHomeTeam = await timesS.timesId(homeTeam);
-  const checkAwayTeam = await timesS.timesId(awayTeam);
+  const timeDaCasa = await timesS.timesId(homeTeam);
 
-  if (!checkHomeTeam[0]?.id || !checkAwayTeam[0]?.id) {
+  const timeDeFora = await timesS.timesId(awayTeam);
+
+  if (!timeDaCasa[0]?.id || !timeDeFora[0]?.id) {
     return res.status(404).json({
+
       message: 'There is no team with such id!',
     });
   }
   return next();
 };
 
-export default ckeckTeam;
+export default checandoTime;

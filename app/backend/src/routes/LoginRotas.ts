@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import Lcontroller from '../controllers/Lcontroller';
 import FieldVerifier from '../middlewares/camposV';
-import tokenValidation from '../middlewares/tokenValidacao';
+import validToken from '../middlewares/tokenValidacao';
 
 const routers: Router = Router();
 
@@ -14,7 +14,7 @@ routers.post(
 );
 routers.get(
   '/login/validate',
-  (req:Request, res:Response, next: NextFunction) => tokenValidation(req, res, next),
+  (req:Request, res:Response, next: NextFunction) => validToken(req, res, next),
   (req:Request, res: Response) => lcontroller.validacaoDeLogin(req, res),
 );
 
