@@ -1,6 +1,6 @@
 import Team from '../database/models/TimesM';
 import Match from '../database/models/PartidaM';
-import { IMatch } from '../interfaces/partidaInterface';
+import { Partidas } from '../interfaces/partidaInterface';
 
 class PartidasS {
   public getMatches = async () => {
@@ -37,7 +37,7 @@ class PartidasS {
   };
 
   public createMatch = async (
-    { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: IMatch,
+    { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals }: Partidas,
   ) => {
     const inProgress = true;
     const result = await Match.create(

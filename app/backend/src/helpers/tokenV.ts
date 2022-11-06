@@ -1,30 +1,37 @@
-import { SignOptions } from 'jsonwebtoken';
 import * as jwt from 'jsonwebtoken';
+import { SignOptions } from 'jsonwebtoken';
 
 const SECRET = process.env.SECRET || 'jwt_secret';
 
-const jwtDefaultConfig: SignOptions = {
+const configJwtFunc: SignOptions = {
   expiresIn: '15d',
   algorithm: 'HS256',
 };
 
 class TokenV {
-  private jwtConfig?: SignOptions;
-  constructor(jwtConfig?: SignOptions) {
-    if (!jwtConfig) { this.jwtConfig = jwtDefaultConfig; }
+  private atributeJwt?: SignOptions;
+
+  constructor(atributeJwt?: SignOptions) {
+    if (!atributeJwt) { this.atributeJwt = configJwtFunc; }
   }
 
-  public tokenGenerator = (payload: any) => jwt.sign({ data: payload }, SECRET, this.jwtConfig);
+  // estudar melhor o funcionamento do token -- precisei de ajuda aqui
+
+  public tokenAqui = (payload: any) => jwt
+    .sign({ data: payload }, SECRET, this.atributeJwt);
 
   public validacaoDeToken = async (token: any) => {
     try {
       const validate = await jwt.verify(token, SECRET);
       return validate;
-    } catch (_err) {
-      const e = new Error('Token must be a valid token');
-      e.name = 'UnauthorizedError';
-      console.log(e);
-      return e;
+    } catch (err) {
+      const novoErro = new Error('Token must be a valid token');
+
+      /* novoErro = 'UnauthorizedError'; */
+
+      novoErro.name = 'UnauthorizedError';
+
+      return novoErro;
     }
   };
 }

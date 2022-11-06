@@ -1,6 +1,6 @@
 import TokenV from '../helpers/tokenV';
 import User from '../database/models/UsuarioModel';
-import PasswordVerifier from '../helpers/criptoV';
+import VerificarSenha from '../helpers/criptoV';
 
 class Lservice {
   public pegandoEmail = async (email:string) => {
@@ -19,13 +19,13 @@ class Lservice {
         email,
       },
     });
-    const teste = PasswordVerifier.passwordCompare(
+    const teste = VerificarSenha.senhaComparada(
       password,
       user?.password,
     );
     if (teste) {
       const tokenV = new TokenV();
-      const token = tokenV.tokenGenerator(user);
+      const token = tokenV.tokenAqui(user);
       return { token };
     }
     return teste;

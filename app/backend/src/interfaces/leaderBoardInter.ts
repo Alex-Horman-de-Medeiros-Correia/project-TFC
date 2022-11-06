@@ -1,4 +1,4 @@
-export interface ILeaderboard {
+export interface Board {
   name?: string
   totalPoints: number
   totalGames: number

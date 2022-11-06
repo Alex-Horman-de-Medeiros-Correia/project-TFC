@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import Team from '../database/models/TimesM';
 import Match from '../database/models/PartidaM';
 import TimesS from './TimesS';
-import { ILeaderboard } from '../interfaces/leaderBoardInter';
+import { Board } from '../interfaces/leaderBoardInter';
 
 class BoardServ {
   public totalVictories = 0;
@@ -186,7 +186,7 @@ class BoardServ {
   };
 
   public teste = (
-    ranking: ILeaderboard [],
+    ranking: Board [],
     index: number,
   ) => {
     const totalPoints = ranking[index]?.totalPoints;
@@ -205,7 +205,7 @@ class BoardServ {
       goalsOwn };
   };
 
-  public rankingBoard = (home: ILeaderboard, away: ILeaderboard, name: string) => {
+  public rankingBoard = (home: Board, away: Board, name: string) => {
     const rankingBoard = {
       name,
       totalPoints: home.totalPoints + away.totalPoints,
